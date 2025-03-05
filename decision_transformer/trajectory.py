@@ -1,11 +1,12 @@
-from dataclasses import field
-from imitation.data.types import TrajectoryWithRew
-from imitation.data import serialize
-from torch import Tensor
-import torch
 import dataclasses
-import numpy as np
 import random
+from dataclasses import field
+
+import numpy as np
+import torch
+from imitation.data import serialize
+from imitation.data.types import TrajectoryWithRew
+from torch import Tensor
 from torch.utils.data import Dataset
 
 
