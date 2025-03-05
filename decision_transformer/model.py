@@ -1,8 +1,8 @@
 from datetime import datetime
 from pathlib import Path
-from typing import Any
-import torch
+
 import gymnasium as gym
+import torch
 from torch import nn
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
@@ -82,7 +82,7 @@ class DecisionTransformer(nn.Module):
         # to (batch_size, 3, seq_length, embedding_dim)
         x = x.permute(0, 2, 1, 3)
 
-        # action prediction
+        # action prediction from (R_0, s_0, a_0, ..., R_t, s_t)
         action = self.action_predictor(x[:, 1])
         return action
 
@@ -91,7 +91,7 @@ class DecisionTransformerAlgo:
     def __init__(
         self,
         env: gym.Env,
-        trajectories_path: list[Any],
+        trajectories_path: str,
         embedding_dim: int,
         context_length: int,
         num_gpt_layers: int,
@@ -138,10 +138,10 @@ class DecisionTransformerAlgo:
                 tb.add_scalar("loss", loss, i)
                 self.optimizer.zero_grad()
                 loss.backward()
-                torch.nn.utils.clip_grad_norm_(self.model.parameters(), 0.50)
+                torch.nn.utils.clip_grad_norm_(self.model.parameters(), 0.25)
                 self.optimizer.step()
                 if i % 100 == 0:
-                    tb.add_scalar("episode_reward", self.evaluate(expected_return), i)
+                    tb.add_scalar("episode_reward", self.evaluate_n(expected_return), i)
                 if i % 1000 == 0 and i != 0:
                     self.save(save_path / f"model_{i}.pt")
                 i += 1
@@ -155,6 +155,7 @@ class DecisionTransformerAlgo:
     def load(self, path: str):
         self.model.load_state_dict(torch.load(path))
 
+    @torch.no_grad()
     def evaluate(self, expected_return: float) -> float:
         expected_return *= self.reward_scale
         returns = torch.zeros((1, self.max_timesteps, 1))
@@ -203,3 +204,10 @@ class DecisionTransformerAlgo:
                 t += 1
 
         return total_r
+
+    @torch.no_grad()
+    def evaluate_n(self, expected_return: float, n: int = 10) -> float:
+        total_r = 0
+        for _ in range(n):
+            total_r += self.evaluate(expected_return)
+        return total_r / n
