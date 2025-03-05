@@ -2,7 +2,7 @@
 A nano and clear decision transformer implementation, achieved by maximizing the utilization of the `torch.nn.Transformer` module.
 
 ## Usage
-Download dataset from [here](https://drive.google.com/drive/folders/1Y3bz74W3PW8uauRkbA-j9IDRWRxEdu7h?usp=sharing).
+Download dataset from [here](https://drive.google.com/drive/folders/1Y3bz74W3PW8uauRkbA-j9IDRWRxEdu7h?usp=sharing), then unzip, rename and place at `./data/halfcheetah-medium-v2`
 ```bash
 usage: train.py [-h] [OPTIONS]
 
