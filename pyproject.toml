@@ -1,14 +1,15 @@
 [project]
-name = "dt-self"
+name = "nanoDT"
 version = "0.1.0"
-description = "Add your description here"
+description = "A nano and clean implementation of decision transformer demo with HalfCheetah-v4"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "gymnasium[mujoco]>=0.29",
-    "imitation==1.0.1",
-    "numpy>=2.2.3",
-    "torch>=2.6.0",
+  "gymnasium[mujoco]==0.29.1",
+  "imitation==1.0.1",
+  "numpy==2.2.3",
+  "torch==2.6.0",
+  "tyro==0.9.16",
 ]
 
 [[tool.uv.index]]
@@ -20,8 +21,8 @@ name = "pytorch-cpu"
 url = "https://download.pytorch.org/whl/cpu"
 explicit = true
 
-
 [tool.uv.sources]
-torch = [
-  { index = "pytorch-cpu" },
-]
+torch = [{ index = "pytorch-cpu" }]
+
+[tool.ruff.lint]
+extend-select = ["I0"]
