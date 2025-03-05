@@ -1,7 +1,7 @@
 [project]
 name = "nanoDT"
 version = "0.1.0"
-description = "A nano and clean implementation of decision transformer demo with HalfCheetah-v4"
+description = "A nano and clear decision transformer implementation, achieved by maximizing the utilization of the `torch.nn.Transformer` module."
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
